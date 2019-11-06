@@ -1,0 +1,10 @@
+---
+- name: 호스트의 사용자 목록을 얻는다
+  hosts: all
+  tasks:
+    - name: /etc/passwd에서 사용자 이름 추출
+      command: cut --delimiter=':' --fields=1 /etc/passwd
+      register: usernames_result
+    - name: usernames_result 변수를 디버깅으로 표시
+      debug:
+        var: usernames_result

@@ -1,0 +1,18 @@
+---
+- name: 호스트의 사용자 목록을 얻는다
+  hosts: all
+  tasks:
+    - name: /etc/passwd에서 사용자 이름 추출
+      command: cut --delimiter=':' --fields=1 /etc/passwd
+      register: usernames_result
+    - name: 명령을 실행한 결과에서 존재하는 사용자 이름을 목록으로 생성
+      # palybook에서 새로운 변수를 반들기 위해서는 set_fact 모듈 사용
+      set_fact:
+        username_list: "{{ usernames_result.stdout_lines }}"
+    - name: ansible 사용자가 있으면 메세지를 출력
+      debug:
+        msg: 이 서버에는 ansible 사용자가 존재합니다.
+      # when 연산자
+      # * 지시자에서 지정한 판정식 에서 사용자 목록에 ansible이 있는지 in 연산자를 사용해서 확인
+      # * 진자2 템플릿의 조건 판정식과는 상관없이 {,}와 % if %로 묶여 있지 않음
+      when: "'ansible' in username_list"

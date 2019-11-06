@@ -1,0 +1,6 @@
+---
+  # 핸들러도 일반적인 태스크와 똑같이 정의할 수 있다. 남은 것은 태스크에 notify를 정의하는 것이다.
+- name: 엔진엑스 리로드
+  service:
+    name: nginx
+    state: reloaded
